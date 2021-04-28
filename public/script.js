@@ -3,18 +3,28 @@ const searchDiv = document.createElement("div");
 const headlineDiv = document.createElement("div");
 
 const searchText = document.createElement("input");
+const searchButton = document.createElement("button");
+const selectHeadline = document.createElement("select");
+searchButton.innerText = "Search";
 
 searchText.placeholder = "search...";
 searchText.type = "text";
+
+selectHeadline.innerHTML = `
+<option value=${10}>${10}</option>
+<option value=${20}>${20}</option>
+<option value=${50}>${50}</option>`;
 
 headlineDiv.className = "head-lines";
 rootElem.appendChild(searchDiv);
 rootElem.appendChild(headlineDiv);
 
 searchDiv.appendChild(searchText);
+searchDiv.appendChild(searchButton);
+searchDiv.appendChild(selectHeadline);
 
-const getAllData = async () => {
-  const response = await fetch("/api?page=2&limit=8");
+const getAllData = async (perPage) => {
+  const response = await fetch(`/api?page=2&limit=${perPage}`);
   return await response.json();
 };
 
@@ -37,12 +47,16 @@ function makePageForHeadLines(headLines) {
 
 async function setup() {
   let headeLineData = [];
+  let perPage = selectHeadline.value;
+  selectHeadline.addEventListener("change", async (event) => {
+    headeLineData = await getAllData(event.target.value);
+    makePageForHeadLines(headeLineData.results);
+  });
   try {
-    headeLineData = await getAllData();
+    headeLineData = await getAllData(perPage);
   } catch (err) {
     console.log("there is an error", err);
   }
-  console.log(headeLineData);
   makePageForHeadLines(headeLineData.results);
 }
 
