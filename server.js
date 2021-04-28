@@ -8,6 +8,31 @@ app.use(express.json({ limit: "1mb" }));
 
 const port = "3003";
 
+const paginatedResults = (req, data) => {
+  const page = parseInt(req.query.page);
+  const limit = parseInt(req.query.limit);
+
+  const start = (page - 1) * limit;
+  const end = page * limit;
+
+  const results = {};
+
+  if (end < data.length) {
+    results.next = {
+      page: page + 1,
+      limit: limit,
+    };
+  }
+  if (start > 0) {
+    results.previous = {
+      page: page - 1,
+      limit: limit,
+    };
+  }
+  results.results = data.slice(start, end);
+  return results;
+};
+
 const fetchApi = () => {
   const bodySend = {
     queryString: "banks",
@@ -30,7 +55,9 @@ const fetchApi = () => {
       .then((data) => {
         const resultData = data.results[0].results;
 
-        res.resultApi = resultData;
+        const results = paginatedResults(req, resultData);
+
+        res.resultApi = results;
         next();
       });
   };
