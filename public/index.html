@@ -7,7 +7,20 @@
     <link href="style.css" rel="stylesheet" />
   </head>
   <body>
-    <div id="root" class="container"></div>
+    <div id="root" class="container">
+      <div id="nav" class="search-container">
+        <div>
+          <input id="search-input" type="text" placeholder="Search..." />
+          <button id="search-button">Search</button>
+        </div>
+        <h3>Financial Times</h3>
+        <select id="select-per-page" ></select>
+      </div>
+      <div id="main" class = "head-lines"></div>
+      <div id="footer" class = "pagination-container">
+        <ul id="page-numbers" class = "pagination-list"></ul>
+      </div>
+    </div>
     <script src="script.js"></script>
   </body>
 </html>
