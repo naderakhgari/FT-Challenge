@@ -13,11 +13,8 @@ body {
   width: 100%;
   padding: 20px 10px;
   display: flex;
-  flex-direction: row;
   justify-content: space-around;
   background-color: rgb(211, 197, 163);
-  top:0
-
 }
 
 .head-lines {
@@ -38,6 +35,7 @@ body {
   display: flex;
   justify-content: center;
 }
+
 .pagination-list {
   display: flex;
   justify-content: space-around;
@@ -51,4 +49,22 @@ body {
   padding: 5px 10px;
   background-color: lightgray;
   cursor: pointer;
+}
+
+@media only screen and (min-width: 720px) {
+  .headLine {
+    width: 45%;
+  }
+}
+
+@media only screen and (min-width: 900px) {
+  .headLine {
+    width: 33%;
+  }
+}
+
+@media only screen and (min-width: 1400px) {
+  .headLine {
+    width: 23%;
+  }
 }
