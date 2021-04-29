@@ -1,30 +1,50 @@
 const rootElem = document.getElementById("root");
-const searchDiv = document.createElement("div");
-const headlineDiv = document.createElement("div");
+const searchDiv = document.getElementById("nav");
+const headlineDiv = document.getElementById("main");
+const paginationDiv = document.getElementById("footer");
+const searchText = document.getElementById("search-input");
+const searchButton = document.getElementById("search-button");
+const selectHeadline = document.getElementById("select-per-page");
+const paginationList = document.getElementById("page-numbers");
 
-const searchText = document.createElement("input");
-const searchButton = document.createElement("button");
-const selectHeadline = document.createElement("select");
-searchButton.innerText = "Search";
-
-searchText.placeholder = "search...";
-searchText.type = "text";
+let page = 1;
 
 selectHeadline.innerHTML = `
 <option value=${10}>${10}</option>
 <option value=${20}>${20}</option>
 <option value=${50}>${50}</option>`;
 
-headlineDiv.className = "head-lines";
-rootElem.appendChild(searchDiv);
-rootElem.appendChild(headlineDiv);
+const changePage = (newPage) => {
+  page = newPage;
+  setup();
+};
 
-searchDiv.appendChild(searchText);
-searchDiv.appendChild(searchButton);
-searchDiv.appendChild(selectHeadline);
+const goToThePreviousPage = () => {
+  if (page > 1) {
+    page -= 1;
+    setup();
+  }
+};
+
+const goToTheNextPage = (pages) => {
+  if (page < pages) {
+    page += 1;
+    setup();
+  }
+};
+
+const createPagination = (pages) => {
+  paginationList.innerHTML = `<li class="pagination-element"><a role="button" disabled=${
+    page === 1
+  } onclick="goToThePreviousPage()"><</a></li>`;
+  for (i = 1; i <= pages; i++) {
+    paginationList.innerHTML += `<li class="pagination-element"><a role="button" id=${i} onclick="changePage(${i})">${i}</a></li>`;
+  }
+  paginationList.innerHTML += `<li class="pagination-element"><a role="button" onclick="goToTheNextPage(${pages})">></a></li>`;
+};
 
 const getAllData = async (perPage) => {
-  const response = await fetch(`/api?page=2&limit=${perPage}`);
+  const response = await fetch(`/api?page=${page}&limit=${perPage}`);
   return await response.json();
 };
 
@@ -45,19 +65,36 @@ function makePageForHeadLines(headLines) {
   });
 }
 
-async function setup() {
+const getSearchedData = async (key, perPage) => {
+  const response = await fetch(
+    `/search/?key=${key}&page=${page}&limit=${perPage}`
+  );
+  return await response.json();
+};
+
+const setup = async () => {
   let headeLineData = [];
+  let searchKeyWord = "";
   let perPage = selectHeadline.value;
   selectHeadline.addEventListener("change", async (event) => {
     headeLineData = await getAllData(event.target.value);
+    createPagination(headeLineData.pages);
+    makePageForHeadLines(headeLineData.results);
+  });
+  searchText.addEventListener("input", (event) => {
+    searchKeyWord = event.target.value;
+  });
+  searchButton.addEventListener("click", async () => {
+    perPage = selectHeadline.value;
+    headeLineData = await getSearchedData(searchKeyWord, perPage);
     makePageForHeadLines(headeLineData.results);
   });
   try {
     headeLineData = await getAllData(perPage);
-  } catch (err) {
-    console.log("there is an error", err);
-  }
+  } catch (err) {}
+  createPagination(headeLineData.pages);
   makePageForHeadLines(headeLineData.results);
-}
+  return headeLineData.results;
+};
 
 window.onload = setup;
