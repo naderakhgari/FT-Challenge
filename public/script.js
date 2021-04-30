@@ -34,9 +34,7 @@ const goToTheNextPage = (pages) => {
 };
 
 const createPagination = (pages) => {
-  paginationList.innerHTML = `<li class="pagination-element"><a role="button" disabled=${
-    page === 1
-  } onclick="goToThePreviousPage()"><</a></li>`;
+  paginationList.innerHTML = `<li class="pagination-element"><a role="button" disabled=${page === 1} onclick="goToThePreviousPage()"><</a></li>`;
   for (i = 1; i <= pages; i++) {
     paginationList.innerHTML += `<li class="pagination-element"><a role="button" id=${i} onclick="changePage(${i})">${i}</a></li>`;
   }
@@ -53,8 +51,8 @@ function makePageForHeadLines(headLines) {
   headLines.forEach((headeLine) => {
     headlineDiv.innerHTML += `
     <div class="headLine">
-      <div class="divElStyle2 col-11 sm-col-11 md-col-11 lg-col-11 xl-col-11">
-        <h2 class="h2ElStyle col-12" id=${headeLine.id}>${headeLine.title.title}</h2>
+      <div >
+        <h2 class="" id=${headeLine.id}>${headeLine.title.title}</h2>
         <ul>
           <li>${headeLine.editorial.byline}</li>
           <li>${headeLine.editorial.subheading}</li>
@@ -77,6 +75,7 @@ const setup = async () => {
   let searchKeyWord = "";
   let perPage = selectHeadline.value;
   selectHeadline.addEventListener("change", async (event) => {
+    searchText.value = ''
     headeLineData = await getAllData(event.target.value);
     createPagination(headeLineData.pages);
     makePageForHeadLines(headeLineData.results);
@@ -87,11 +86,14 @@ const setup = async () => {
   searchButton.addEventListener("click", async () => {
     perPage = selectHeadline.value;
     headeLineData = await getSearchedData(searchKeyWord, perPage);
+    createPagination(headeLineData.pages);
     makePageForHeadLines(headeLineData.results);
   });
   try {
     headeLineData = await getAllData(perPage);
-  } catch (err) {}
+  } catch (err) {
+    console.log('this is an error!', err)
+  }
   createPagination(headeLineData.pages);
   makePageForHeadLines(headeLineData.results);
   return headeLineData.results;
