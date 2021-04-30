@@ -8,11 +8,9 @@ const selectHeadline = document.getElementById("select-per-page");
 const paginationList = document.getElementById("page-numbers");
 
 let page = 1;
-
-selectHeadline.innerHTML = `
-<option value=${10}>${10}</option>
-<option value=${20}>${20}</option>
-<option value=${50}>${50}</option>`;
+let headeLineData = [];
+let searchKeyWord = searchText.value;
+let amountPerPage = 10;
 
 const changePage = (newPage) => {
   page = newPage;
@@ -33,16 +31,18 @@ const goToTheNextPage = (pages) => {
   }
 };
 
-const createPagination = (pages) => {
-  paginationList.innerHTML = `<li class="pagination-element"><a role="button" disabled=${page === 1} onclick="goToThePreviousPage()"><</a></li>`;
+const createPaginationElements = (pages) => {
+  paginationList.innerHTML = `<li><a class="pagination-element" role="button" onclick="goToThePreviousPage()"><</a></li>`;
   for (i = 1; i <= pages; i++) {
-    paginationList.innerHTML += `<li class="pagination-element"><a role="button" id=${i} onclick="changePage(${i})">${i}</a></li>`;
+    paginationList.innerHTML += `<li><a class="pagination-element" role="button" id=${i} onclick="changePage(${i})">${i}</a></li>`;
   }
-  paginationList.innerHTML += `<li class="pagination-element"><a role="button" onclick="goToTheNextPage(${pages})">></a></li>`;
+  paginationList.innerHTML += `<li><a class="pagination-element" role="button" onclick="goToTheNextPage(${pages})">></a></li>`;
 };
 
-const getAllData = async (perPage) => {
-  const response = await fetch(`/api?page=${page}&limit=${perPage}`);
+const getAllData = async (perPage, searchKey) => {
+  const response = await fetch(
+    `/api?page=${page}&limit=${perPage}&searchKey=${searchKey}`
+  );
   return await response.json();
 };
 
@@ -63,38 +63,31 @@ function makePageForHeadLines(headLines) {
   });
 }
 
-const getSearchedData = async (key, perPage) => {
-  const response = await fetch(
-    `/search/?key=${key}&page=${page}&limit=${perPage}`
-  );
-  return await response.json();
-};
+selectHeadline.addEventListener("change", async (event) => {
+  amountPerPage = event.target.value;
+  headeLineData = await getAllData(amountPerPage, searchKeyWord);
+  createPaginationElements(headeLineData.pages);
+  makePageForHeadLines(headeLineData.results);
+});
+
+searchText.addEventListener("input", (event) => {
+  searchKeyWord = event.target.value;
+});
+
+searchButton.addEventListener("click", async () => {
+  amountPerPage = selectHeadline.value;
+  headeLineData = await getAllData(amountPerPage, searchKeyWord);
+  createPaginationElements(headeLineData.pages);
+  makePageForHeadLines(headeLineData.results);
+});
 
 const setup = async () => {
-  let headeLineData = [];
-  let searchKeyWord = "";
-  let perPage = selectHeadline.value;
-  selectHeadline.addEventListener("change", async (event) => {
-    searchText.value = ''
-    headeLineData = await getAllData(event.target.value);
-    createPagination(headeLineData.pages);
-    makePageForHeadLines(headeLineData.results);
-  });
-  searchText.addEventListener("input", (event) => {
-    searchKeyWord = event.target.value;
-  });
-  searchButton.addEventListener("click", async () => {
-    perPage = selectHeadline.value;
-    headeLineData = await getSearchedData(searchKeyWord, perPage);
-    createPagination(headeLineData.pages);
-    makePageForHeadLines(headeLineData.results);
-  });
   try {
-    headeLineData = await getAllData(perPage);
+    headeLineData = await getAllData(amountPerPage, searchKeyWord);
   } catch (err) {
-    console.log('this is an error!', err)
+    console.log("this is an error!", err);
   }
-  createPagination(headeLineData.pages);
+  createPaginationElements(headeLineData.pages);
   makePageForHeadLines(headeLineData.results);
   return headeLineData.results;
 };
