@@ -50,7 +50,7 @@ function makePageForHeadLines(headLines) {
   headlineDiv.innerHTML = "";
   headLines.forEach((headeLine) => {
     headlineDiv.innerHTML += `
-    <div class="headLine">
+    <section class="headLine" role="contentinfo" aria-label=${headeLine.title.title}>
       <div >
         <h2 class="" id=${headeLine.id}>${headeLine.title.title}</h2>
         <ul>
@@ -59,7 +59,7 @@ function makePageForHeadLines(headLines) {
         </ul>
         <p>${headeLine.summary.excerpt}</p>
       </div>
-    </div>`;
+    </section>`;
   });
 }
 

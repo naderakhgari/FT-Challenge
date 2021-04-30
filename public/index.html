@@ -10,19 +10,27 @@
     <div id="root" class="container">
       <div id="nav" class="search-container">
         <div>
-          <input id="search-input" type="text" placeholder="Search..." />
+          <div>
+            <label forhtml="search-headline">Search for headline</label>
+            <input
+              id="search-input"
+              type="text"
+              placeholder="Search..."
+              name="search-headline"
+            />
+          </div>
           <button id="search-button">Search</button>
         </div>
-        <h3>Financial Times</h3>
-        <select id="select-per-page" >
-          <option value=10>10</option>
-          <option value=20>20</option>
-          <option value=50>50</option>
+        <h2>Financial Times</h2>
+        <select id="select-per-page" class="select-per-page">
+          <option value="10">10 / page</option>
+          <option value="20">20 / page</option>
+          <option value="50">50 / page</option>
         </select>
       </div>
-      <div id="main" class = "head-lines"></div>
-      <div id="footer" class = "pagination-container">
-        <ul id="page-numbers" class = "pagination-list"></ul>
+      <div id="main" class="head-lines"></div>
+      <div id="footer" class="pagination-container">
+        <ul id="page-numbers" class="pagination-list"></ul>
       </div>
     </div>
     <script src="script.js"></script>
