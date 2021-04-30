@@ -35,8 +35,7 @@ export const loadData = async (req, res) => {
   const response = await fetch(`https://api.ft.com/content/search/v1`, options);
   const result = await response.json();
   let resultData = result.results[0].results;
-
-  const searchKey = req.query.key;
+   const searchKey = req.query.searchKey;
   if (searchKey) {
     resultData = searchKeyWord(searchKey, resultData);
   }
