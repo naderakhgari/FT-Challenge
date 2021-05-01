@@ -65,9 +65,13 @@ function makePageForHeadLines(headLines) {
 
 selectHeadline.addEventListener("change", async (event) => {
   amountPerPage = event.target.value;
-  headeLineData = await getAllData(amountPerPage, searchKeyWord);
-  createPaginationElements(headeLineData.pages);
-  makePageForHeadLines(headeLineData.results);
+  try{
+    headeLineData = await getAllData(amountPerPage, searchKeyWord);
+    createPaginationElements(headeLineData.pages);
+    makePageForHeadLines(headeLineData.results);
+  }catch(err){
+    headlineDiv.innerHTML = `<div>Something went wrong, try again latter!</div>`
+  }
 });
 
 searchText.addEventListener("input", (event) => {
@@ -76,20 +80,24 @@ searchText.addEventListener("input", (event) => {
 
 searchButton.addEventListener("click", async () => {
   amountPerPage = selectHeadline.value;
-  headeLineData = await getAllData(amountPerPage, searchKeyWord);
-  createPaginationElements(headeLineData.pages);
-  makePageForHeadLines(headeLineData.results);
+  try{
+    headeLineData = await getAllData(amountPerPage, searchKeyWord);
+    createPaginationElements(headeLineData.pages);
+    makePageForHeadLines(headeLineData.results);
+  }catch(err){
+    headlineDiv.innerHTML = `<div>No entry found!</div>`
+  }
 });
 
 const setup = async () => {
   try {
     headeLineData = await getAllData(amountPerPage, searchKeyWord);
+    createPaginationElements(headeLineData.pages);
+    makePageForHeadLines(headeLineData.results);
+
   } catch (err) {
-    console.log("this is an error!", err);
+    headlineDiv.innerHTML = `<div>Something went wrong, try again latter!</div>`
   }
-  createPaginationElements(headeLineData.pages);
-  makePageForHeadLines(headeLineData.results);
-  return headeLineData.results;
 };
 
 window.onload = setup;
