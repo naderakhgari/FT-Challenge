@@ -27,12 +27,9 @@ export const loadData = async (req, res) => {
     const response = await fetch(apiUrl, options);
     const result = await response.json();
     let resultData = result.results[0].results;
-    console.log('what about now?',result.query.resultContext.maxResults)
     const results = paginatedResults(req, resultData);
     res.json(results);
   }catch(err){
-    
-    console.log('no entry found!',err)
     res.status(400).send(err)
   }
 };
