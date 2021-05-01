@@ -1,5 +1,5 @@
 body {
-  background-color: rgb(197, 183, 147);
+  background-color: rgb(250, 238, 229);
 }
 
 .container {
@@ -9,21 +9,43 @@ body {
   align-items: center;
 }
 
-.search-container{
+.nav-container {
+  position: fixed;
+  top: 0;
+  height: 100px;
   width: 100%;
   padding: 20px 10px;
   display: flex;
+  flex-direction: column-reverse;
   justify-content: space-around;
   align-items: center;
-  background-color: rgb(211, 197, 163);
+  background-color: rgb(250, 238, 229);
+}
+.search-container {
+  display: flex;
 }
 
-.select-per-page{
-width: 100px;
-height: 30px;
+.select-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  
+}
+
+.select-per-page {
+  width: 100px;
+  height: 30px;
+  margin: 0 15px;
+}
+
+.search-input {
+  padding: 8px;
+  width: 50%;
 }
 
 .head-lines {
+  margin-top: 150px;
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
@@ -31,7 +53,10 @@ height: 30px;
 
 .headLine {
   width: 100%;
-  border: solid 1px black;
+  background-color: rgb(241, 227, 216);
+  margin: 10px 5px;
+  padding: 10px;
+  border-radius: 5px;
 }
 
 .pagination-container {
@@ -57,20 +82,29 @@ height: 30px;
   cursor: pointer;
 }
 
-@media only screen and (min-width: 720px) {
+@media only screen and (min-width: 700px) {
   .headLine {
-    width: 45%;
+    width: 40%;
   }
 }
 
 @media only screen and (min-width: 900px) {
   .headLine {
-    width: 33%;
+    width: 30%;
+  }
+  .nav-container {
+    flex-direction: row-reverse;
+  }
+  .head-lines {
+    margin-top: 100px;
+  }
+  .nav-container{
+    height: 50px;
   }
 }
 
 @media only screen and (min-width: 1400px) {
   .headLine {
-    width: 23%;
+    width: 20%;
   }
 }
