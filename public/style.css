@@ -14,7 +14,13 @@ body {
   padding: 20px 10px;
   display: flex;
   justify-content: space-around;
+  align-items: center;
   background-color: rgb(211, 197, 163);
+}
+
+.select-per-page{
+width: 100px;
+height: 30px;
 }
 
 .head-lines {
