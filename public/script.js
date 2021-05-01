@@ -46,18 +46,41 @@ const getAllData = async (perPage, searchKey) => {
   return await response.json();
 };
 
+const culculatePublishDate = (initialDate) => {
+  const publishedDate = new Date(initialDate);
+  const currentDate = new Date();
+  const diffTime = Math.abs(currentDate - publishedDate);
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  switch (diffDays) {
+    case 0:
+      return "New";
+    case 1:
+      return "Yesterday";
+    case diffDays >= 365:
+      return Math.floor(diffDays / 365) + " Years ago";
+    case diffDays >= 30:
+      return Math.floor(diffDays / 30) + " Months ago";
+    default:
+      return "";
+  }
+};
+
 function makePageForHeadLines(headLines) {
   headlineDiv.innerHTML = "";
   headLines.forEach((headeLine) => {
+    const { title, id, editorial, summary, lifecycle } = headeLine;
     headlineDiv.innerHTML += `
-    <section class="headLine" role="contentinfo" aria-label=${headeLine.title.title}>
+    <section class="headLine" role="contentinfo" aria-label=${title.title}>
       <div >
-        <h2 class="" id=${headeLine.id}>${headeLine.title.title}</h2>
+        <h2 class="" id=${id}>${title.title}</h2>
         <ul>
-          <li>${headeLine.editorial.byline}</li>
-          <li>${headeLine.editorial.subheading}</li>
+          <li>${editorial.byline}</li>
+          <li>${editorial.subheading}</li>
         </ul>
-        <p>${headeLine.summary.excerpt}</p>
+        <p>${summary.excerpt}</p>
+        <div class="publish-date">${culculatePublishDate(
+          lifecycle.initialPublishDateTime
+        )}</div>
       </div>
     </section>`;
   });
@@ -65,12 +88,12 @@ function makePageForHeadLines(headLines) {
 
 selectHeadline.addEventListener("change", async (event) => {
   amountPerPage = event.target.value;
-  try{
+  try {
     headeLineData = await getAllData(amountPerPage, searchKeyWord);
     createPaginationElements(headeLineData.pages);
     makePageForHeadLines(headeLineData.results);
-  }catch(err){
-    headlineDiv.innerHTML = `<div>Something went wrong, try again latter!</div>`
+  } catch (err) {
+    headlineDiv.innerHTML = `<div>Something went wrong, try again latter!</div>`;
   }
 });
 
@@ -80,12 +103,12 @@ searchText.addEventListener("input", (event) => {
 
 searchButton.addEventListener("click", async () => {
   amountPerPage = selectHeadline.value;
-  try{
+  try {
     headeLineData = await getAllData(amountPerPage, searchKeyWord);
     createPaginationElements(headeLineData.pages);
     makePageForHeadLines(headeLineData.results);
-  }catch(err){
-    headlineDiv.innerHTML = `<div>No entry found!</div>`
+  } catch (err) {
+    headlineDiv.innerHTML = `<div>No entry found!</div>`;
   }
 });
 
@@ -94,9 +117,8 @@ const setup = async () => {
     headeLineData = await getAllData(amountPerPage, searchKeyWord);
     createPaginationElements(headeLineData.pages);
     makePageForHeadLines(headeLineData.results);
-
   } catch (err) {
-    headlineDiv.innerHTML = `<div>Something went wrong, try again latter!</div>`
+    headlineDiv.innerHTML = `<div>Something went wrong, try again latter!</div>`;
   }
 };
 
