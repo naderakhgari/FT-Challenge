@@ -5,7 +5,6 @@ dotenv.config();
 import { paginatedResults } from "../util";
 
 const apiKey = process.env.APIKEY;
-const apiUrl = process.env.URL;
 
 export const loadData = async (req, res) => {
   const searchKey = req.query.searchKey;
@@ -24,7 +23,7 @@ export const loadData = async (req, res) => {
     },
   };
   try{
-    const response = await fetch(apiUrl, options);
+    const response = await fetch("https://api.ft.com/content/search/v1", options);
     const result = await response.json();
     let resultData = result.results[0].results;
     const results = paginatedResults(req, resultData);
