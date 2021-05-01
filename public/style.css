@@ -59,6 +59,10 @@ body {
   border-radius: 5px;
 }
 
+.publish-date{
+  text-align: right;
+}
+
 .pagination-container {
   font-size: large;
   margin-top: 20px;
