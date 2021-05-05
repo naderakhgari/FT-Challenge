@@ -1,0 +1,18 @@
+<main id="main" class="head-lines">
+    {{#if msg}}
+        <h2> {{msg}} </h2>
+    {{else}}
+        {{# each results}}
+        <section class="headLine" role="contentinfo" aria-label={{title.title}}>
+            <div>
+                <h2 class="" id={{id}}>{{title.title}}</h2>
+                <ul>
+                    <li>{{editorial.byline}}</li>
+                    <li>{{editorial.subheading}}</li>
+                </ul>
+                <p>{{summary.excerpt}}</p>
+            </div>
+        </section>`
+        {{/ each}}
+    {{/if}}
+</main>

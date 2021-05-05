@@ -1,0 +1,20 @@
+<div id="footer" class="pagination-container">
+    {{#if this.previous}}
+        <a href="/?page={{this.previous}}&searchKey={{searchKey}}" class="pagination-element"><</a>
+        <a href='/?page={{this.previous}}&searchKey={{searchKey}}' class="pagination-element">
+
+            {{this.previous}}
+        </a>
+    {{else }}
+
+        <a class="pagination-element disabled"><</a>
+
+    {{/if}}
+        <a href="/?page={{this.page}}&searchKey={{searchKey}}" class="pagination-element">{{this.page}}</a>
+        {{#if this.next}}
+            <a href="/?page={{this.next}}&searchKey={{searchKey}}" class="pagination-element"> {{this.next}} </a>
+            <a href="/?page={{this.next}}&searchKey={{searchKey}}" class="pagination-element">></a>
+        {{else}}
+            <a class="pagination-element disabled">></a>
+        {{/if}}
+</div>
