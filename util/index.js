@@ -1,7 +1,9 @@
 const paginationResults = (requestPage, data) => {
   const resultData = data.results[0].results;
-  const { indexCount } = data.results[0];
+  const index = data.results[0].indexCount
+  const {maxResults} = data.query.resultContext
 
+  const indexCount = index >= maxResults ? maxResults : index
   const page = requestPage ? parseInt(requestPage) : 1;
   const limit = 10;
 
