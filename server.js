@@ -20,7 +20,15 @@ app.engine(
   })
 );
 
+const port = 3003;
+const listener = app.listen(port, function () {
+  console.log("server is listtening to the prot: " + listener.address().port);
+});
+
 const paginationResults = (requestPage, data) => {
+  const resultData = data.results[0].results
+  const { indexCount } = data.results[0]
+  
   const page = requestPage ? parseInt(requestPage) : 1;
   const limit = 10;
 
@@ -28,27 +36,13 @@ const paginationResults = (requestPage, data) => {
   const end = page * limit;
 
   const results = {};
+
   results.page = page;
-
-  if (end < data.length) {
-    results.next = page + 1;
-  } else {
-    results.next = null;
-  }
-
-  if (start > 0) {
-    results.previous = page - 1;
-  } else {
-    results.previous = null;
-  }
-
-  if (limit >= data.length) {
-    results.pages = 1;
-    results.results = data;
-  } else {
-    results.pages = Math.ceil(data.length / limit);
-    results.results = data.slice(start, end);
-  }
+  results.next = end < indexCount ? page + 1 : null
+  results.previous = start > 0 ? page - 1 : null
+  results.pages = limit >= indexCount ? 1 : Math.ceil(indexCount / limit);
+  results.results = limit >= indexCount ? resultData : resultData.slice(start, end)
+ 
   return results;
 };
 
@@ -76,8 +70,7 @@ app.get("/", async (req, res) => {
     const result = await response.json();
 
     if (result.results[0].indexCount) {
-      let resultData = result.results[0].results;
-      let results = paginationResults(page, resultData);
+      let results = paginationResults(page, result);
       results.searchKey = searchKey;
       res.render("main", results);
     } else {
@@ -86,13 +79,8 @@ app.get("/", async (req, res) => {
   } catch (err) {
     res.status(400).send(err);
   }
-
-  app.get("*", (req, res) => {
-    res.render("main", { msg: "Sorry, content not found!" });
-  });
 });
 
-const port = 3003;
-const listener = app.listen(port, function () {
-  console.log("server is listtening to the prot: " + listener.address().port);
+app.get("*", (req, res) => {
+  res.render("main", { msg: "Ops, something went wrong, please try again!" });
 });
