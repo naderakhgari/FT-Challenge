@@ -28,7 +28,7 @@ const listener = app.listen(port, function () {
 const paginationResults = (requestPage, data) => {
   const resultData = data.results[0].results
   const { indexCount } = data.results[0]
-  
+
   const page = requestPage ? parseInt(requestPage) : 1;
   const limit = 10;
 
@@ -40,7 +40,7 @@ const paginationResults = (requestPage, data) => {
   results.page = page;
   results.next = end < indexCount ? page + 1 : null
   results.previous = start > 0 ? page - 1 : null
-  results.pages = limit >= indexCount ? 1 : Math.ceil(indexCount / limit);
+  // results.pages = limit >= indexCount ? 1 : Math.ceil(indexCount / limit);
   results.results = limit >= indexCount ? resultData : resultData.slice(start, end)
  
   return results;
