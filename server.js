@@ -4,6 +4,8 @@ const fetch = require("node-fetch");
 const dotenv = require("dotenv");
 dotenv.config();
 
+const paginationResults = require('./util')
+
 const apiKey = process.env.APIKEY;
 const apiUrl = process.env.URL;
 const app = express();
@@ -25,25 +27,7 @@ const listener = app.listen(port, function () {
   console.log("server is listtening to the prot: " + listener.address().port);
 });
 
-const paginationResults = (requestPage, data) => {
-  const resultData = data.results[0].results
-  const { indexCount } = data.results[0]
 
-  const page = requestPage ? parseInt(requestPage) : 1;
-  const limit = 10;
-
-  const start = (page - 1) * limit;
-  const end = page * limit;
-
-  const results = {};
-
-  results.page = page;
-  results.next = end < indexCount ? page + 1 : null
-  results.previous = start > 0 ? page - 1 : null
-  results.results = limit >= indexCount ? resultData : resultData.slice(start, end)
- 
-  return results;
-};
 
 app.get("/", async (req, res) => {
   const { searchKey, page } = req.query;
