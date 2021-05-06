@@ -24,7 +24,7 @@ When you have serveral pages, you can change the page by clicking on the specifi
 ##  Task points
 
 This app has been built using Javascript and node.js
-It has been deployed on Heroku at :
+It has been deployed on Heroku at : https://nader-ft-challenge.herokuapp.com/
 It does not relay on any client-side frameworks
 I used media query to make the app be responsive
 Have a similar look and feel as ft.com
