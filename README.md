@@ -2,6 +2,15 @@
 
 FT-Headline-Challenge is JavaScript and Node.js app for showing headlines from Financial Times
 
+## Technologies
+
+### HTML
+### CSS
+### JavaScrip
+### Node.js
+### Express
+### Handlebars
+
 ## Setup
 
 Use 'git clone git@github.com:naderakhgari/FT-Challenge.git' to clone the repository into your local machin.
@@ -34,7 +43,7 @@ The application has been implemented with server-side render. I sued 'Handlebars
 
 ## In future
 
-I would use service worker to make the app capable of working offline
+I will use service worker to make the app capable of working offline
 I will use Origami component to design the app
 I will write unit test and deploy it in circle-CI for automatic testing
 
