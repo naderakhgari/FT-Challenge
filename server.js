@@ -40,7 +40,6 @@ const paginationResults = (requestPage, data) => {
   results.page = page;
   results.next = end < indexCount ? page + 1 : null
   results.previous = start > 0 ? page - 1 : null
-  // results.pages = limit >= indexCount ? 1 : Math.ceil(indexCount / limit);
   results.results = limit >= indexCount ? resultData : resultData.slice(start, end)
  
   return results;
