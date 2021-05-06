@@ -20,7 +20,7 @@ app.engine(
   })
 );
 
-const port = 3003;
+const port = process.env.PORT || 3003;
 const listener = app.listen(port, function () {
   console.log("server is listtening to the prot: " + listener.address().port);
 });
